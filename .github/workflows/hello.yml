@@ -6,8 +6,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - run: pwd
+      - name: Print Current Directory
+        run: pwd
 
-      - run: ls
+      - name: List Files
+        run: ls
 
-      - run: echo "Hello GitHub Actions!"
+      - name: Say Hello
+        run: echo "Hello GitHub Actions!"
