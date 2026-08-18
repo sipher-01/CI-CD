@@ -1,0 +1,43 @@
+name: Practice Workflow
+on: 
+    workflow_dispatch:
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout Repository
+              uses: actions/checkout@v7
+
+            - name: create a file message.txt
+              run: |
+               mkdir -p files/practice
+               echo "Hello from build job" >> files/practice/message.txt
+            
+            - name: Upload Artifact
+              uses: actions/upload-artifact@v7
+              with:
+                    name: message-artifact
+                    path: files/practice/message.txt
+                    retention-days: 1
+    
+    test:
+        needs: build
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: download the artifact
+              uses: actions/download-artifact@v7
+              with:
+                    name: message-artifact
+                    path: files/practice/.
+            
+            - name: Display the content of message
+              run: cat files/practice/message.txt
+
+    deploy:
+        needs: test
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Deploy Application
+              run: echo "Deploying..."
