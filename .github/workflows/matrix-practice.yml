@@ -1,0 +1,34 @@
+name: matrix-practice
+on:
+ workflow_dispatch:
+
+    
+
+jobs:
+    test:
+        strategy:
+            fail-fast: false
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+                node: [20,22]
+                
+        runs-on: ${{ matrix.os }}
+                
+
+        steps:
+            - name: checkout repository
+              uses: actions/checkout@v7
+            
+            - name: setup node
+              uses: actions/setup-node@v7
+              with:
+                node-version: ${{ matrix.node }}
+            
+            - name: print os and node version
+              run: |
+                echo "OS: ${{ matrix.os }}"
+                echo "Node Version: ${{ matrix.node }}"
+            
+            - name: print command
+              run: |
+                node -e "console.log('CI matrix works!')"
